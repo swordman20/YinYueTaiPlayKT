@@ -1,7 +1,10 @@
 package com.example.yinyuetaiplaykt.ui.fragment
 
+import android.graphics.Color
 import android.view.View
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.yinyuetaiplaykt.R
 import com.example.yinyuetaiplaykt.adapter.HomeAdapter
 import com.example.yinyuetaiplaykt.base.BaseFragment
@@ -15,6 +18,7 @@ import okhttp3.*
 import java.io.IOException
 
 class HomeFragment : BaseFragment() {
+    private var pageNum = 1
     private val homeAdapter by lazy { HomeAdapter() }
 
     override fun initView(): View? {
@@ -25,6 +29,34 @@ class HomeFragment : BaseFragment() {
         super.initListener()
         recyclerview.layoutManager = LinearLayoutManager(context)
         recyclerview.adapter = homeAdapter
+        //swipeRefreshLayout
+        //varagr 可变参数的意思
+        swipeRefreshLayout.setColorSchemeColors(Color.YELLOW,Color.RED,Color.BLUE)
+        swipeRefreshLayout.setOnRefreshListener {
+            loadDatas()
+        }
+        recyclerview.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                when(newState){
+                    //如果滑动停止，并且是LinearLayoutManager的最后一条
+                    RecyclerView.SCROLL_STATE_IDLE->{
+//                        myLog { "滑动停止了" }
+                        val layoutManager = recyclerView.layoutManager
+                        if (layoutManager is LinearLayoutManager) {
+                            val lastPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                            if (lastPosition == homeAdapter.itemCount-1) {
+                                //最后一条已经显示，请求网络加载更多数据
+                                var positiono=homeAdapter.itemCount-1
+                                myLog { "最后一条已经显示，请求网络加载更多数据$positiono" }
+                                ++pageNum
+                                loadMore(pageNum)
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
     }
 
     override fun initData() {
@@ -42,6 +74,9 @@ class HomeFragment : BaseFragment() {
             //在子线程
             override fun onFailure(call: Call, e: IOException) {
                 myToast("获取数据失败")
+                ThreadUtil.runOnMainThread(Runnable {
+                    swipeRefreshLayout.isRefreshing = false
+                })
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -54,7 +89,42 @@ class HomeFragment : BaseFragment() {
                 myLog { "数据长度${listBean.list.size}" }
 
                 ThreadUtil.runOnMainThread(Runnable {
+                    swipeRefreshLayout.isRefreshing = false
                     homeAdapter.updateList(listBean.list)
+                })
+            }
+
+        })
+    }
+    private fun loadMore(pageNum:Int) {
+        val path = URLProviderUtils.getHomeUrl(pageNum, 20)
+        myLog { "请求URL$path" }
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(path)
+            .get()
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            //在子线程
+            override fun onFailure(call: Call, e: IOException) {
+                myToast("获取数据失败")
+                ThreadUtil.runOnMainThread(Runnable {
+                    swipeRefreshLayout.isRefreshing = false
+                })
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val result = response.body?.string()
+                myLog { "获取数据成功${result}" }
+                val gson = Gson()
+                //这一点和Java使用有一点不同
+                val listBean =
+                    gson.fromJson<BaseListBean>(result, object : TypeToken<BaseListBean>() {}.type)
+                myLog { "数据长度${listBean.list.size}" }
+
+                ThreadUtil.runOnMainThread(Runnable {
+                    swipeRefreshLayout.isRefreshing = false
+                    homeAdapter.addMoreList(listBean.list)
                 })
             }
 
