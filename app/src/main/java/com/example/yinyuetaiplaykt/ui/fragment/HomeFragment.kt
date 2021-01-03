@@ -2,24 +2,27 @@ package com.example.yinyuetaiplaykt.ui.fragment
 
 import android.graphics.Color
 import android.view.View
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yinyuetaiplaykt.R
 import com.example.yinyuetaiplaykt.adapter.HomeAdapter
 import com.example.yinyuetaiplaykt.base.BaseFragment
+import com.example.yinyuetaiplaykt.model.HomeItemBean
 import com.example.yinyuetaiplaykt.model.base.BaseListBean
+import com.example.yinyuetaiplaykt.presenter.impl.HomePresenterImpl
 import com.example.yinyuetaiplaykt.util.ThreadUtil
 import com.example.yinyuetaiplaykt.util.URLProviderUtils
+import com.example.yinyuetaiplaykt.view.HomeView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_home.*
 import okhttp3.*
 import java.io.IOException
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), HomeView {
     private var pageNum = 1
     private val homeAdapter by lazy { HomeAdapter() }
+    private val mPresenter by lazy { HomePresenterImpl(this) }
 
     override fun initView(): View? {
         return View.inflate(context, R.layout.fragment_home, null)
@@ -49,7 +52,8 @@ class HomeFragment : BaseFragment() {
                                 var positiono=homeAdapter.itemCount-1
                                 myLog { "最后一条已经显示，请求网络加载更多数据$positiono" }
                                 ++pageNum
-                                loadMore(pageNum)
+//                                loadMore(pageNum)
+                                mPresenter.loadMore(pageNum)
                             }
                         }
                     }
@@ -60,7 +64,8 @@ class HomeFragment : BaseFragment() {
     }
 
     override fun initData() {
-        loadDatas()
+            mPresenter.loadDatas()
+//        loadDatas()
     }
 
     private fun loadDatas() {
@@ -129,5 +134,20 @@ class HomeFragment : BaseFragment() {
             }
 
         })
+    }
+
+    override fun onMoreSuccess(list: List<HomeItemBean>?) {
+        swipeRefreshLayout.isRefreshing = false
+        homeAdapter.addMoreList(list)
+    }
+
+    override fun onError(message: String?) {
+        swipeRefreshLayout.isRefreshing = false
+        myToast(message)
+    }
+
+    override fun onLoadSuccess(list: List<HomeItemBean>?) {
+        swipeRefreshLayout.isRefreshing = false
+        homeAdapter.updateList(list)
     }
 }

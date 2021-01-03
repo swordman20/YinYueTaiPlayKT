@@ -19,16 +19,19 @@ class HomeAdapter : RecyclerView.Adapter<HomeAdapter.HomeHolder>() {
     /**
      * 更新数据操作
      */
-    fun updateList(list: List<HomeItemBean>) {
+    fun updateList(list: List<HomeItemBean>?) {
         this.list.clear()
-        this.list.addAll(list)
+        this.list.addAll(list!!)
         notifyDataSetChanged()
     }
     /**
      * 加载更多数据
      */
-    fun addMoreList(list: List<HomeItemBean>) {
-        this.list.addAll(list)
+    fun addMoreList(list: List<HomeItemBean>?) {
+//        let == java check null
+        list?.let {
+            this.list.addAll(it)
+        }
         notifyDataSetChanged()
     }
 

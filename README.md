@@ -32,6 +32,8 @@
 
 **widget** 存放一些自定义view
 
+**net** 网络请求的简单封装
+
 ### BaseActivity
 定义了抽象方法abstract
 但是定义了，子类复写方法protected后面必须要加open，这点和Java不同
