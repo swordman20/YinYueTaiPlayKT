@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:key="clear_cache"
+        android:title="清除缓存" />
+    <SwitchPreferenceCompat
+        android:key="push"
+        android:title="推送通知" />
+    <SwitchPreferenceCompat
+        android:key="no_wifi"
+        android:title="非WIFI下加载图片" />
+    <Preference
+        android:key="about"
+        android:title="关于" />
+
+</PreferenceScreen>
