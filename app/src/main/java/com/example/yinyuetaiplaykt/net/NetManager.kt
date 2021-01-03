@@ -33,7 +33,7 @@ class NetManager private constructor() {
             //在子线程
             override fun onFailure(call: Call, e: IOException) {
                 ThreadUtil.runOnMainThread(Runnable {
-                    req.handler.onError(e.message)
+                    req.handler.onError(req.type,e.message)
                 })
             }
 
@@ -42,7 +42,7 @@ class NetManager private constructor() {
                 val parseResult = req.parseResult(result)
 
                 ThreadUtil.runOnMainThread(Runnable {
-                    req.handler.onSuccess(parseResult)
+                    req.handler.onSuccess(req.type,parseResult)
                 })
             }
 

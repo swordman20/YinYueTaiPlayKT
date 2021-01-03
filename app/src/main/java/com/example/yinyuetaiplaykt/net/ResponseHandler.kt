@@ -6,7 +6,7 @@ package com.example.yinyuetaiplaykt.net
  *    desc   : 请求的回调
  */
 interface ResponseHandler<T> {
-    fun onError(msg:String?)
+    fun onError(type:Int,msg:String?)
     //用泛型返回
-    fun onSuccess(result:T)
+    fun onSuccess(type:Int,result:T)
 }

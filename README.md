@@ -48,6 +48,7 @@ toolBar height ?attr/actionBarSize   根据主题高度设置高度
 ### 1月3日疑问：
 定义方法inline 关键字是什么意思：内的关键字
 reified 关键字是什么意思:内联函数，用于约束类型
+const 修饰的常量是什么意思
 
 ### URLProviderUtils
 [Kotlin定义静态方法](https://www.jianshu.com/p/a71f41186aa0)
@@ -56,3 +57,6 @@ reified 关键字是什么意思:内联函数，用于约束类型
 
 **companion object** 包裹方法，用于定义静态方法（companion object这个关键字实际上会在Util类的内部创建一个伴生类，  
 而fun这个方法就是定义在这个伴生类里面的实例方法）
+
+### MRequest
+**open** 关键字代码子类可以集成的class ，接口不需要此修饰

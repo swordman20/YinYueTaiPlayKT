@@ -28,6 +28,11 @@ class HomeFragment : BaseFragment(), HomeView {
         return View.inflate(context, R.layout.fragment_home, null)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mPresenter.destroyView()
+    }
+
     override fun initListener() {
         super.initListener()
         recyclerview.layoutManager = LinearLayoutManager(context)
@@ -36,7 +41,9 @@ class HomeFragment : BaseFragment(), HomeView {
         //varagr 可变参数的意思
         swipeRefreshLayout.setColorSchemeColors(Color.YELLOW,Color.RED,Color.BLUE)
         swipeRefreshLayout.setOnRefreshListener {
-            loadDatas()
+//            loadDatas()
+            pageNum = 1
+            mPresenter.loadDatas(pageNum)
         }
         recyclerview.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -64,7 +71,8 @@ class HomeFragment : BaseFragment(), HomeView {
     }
 
     override fun initData() {
-            mPresenter.loadDatas()
+            pageNum = 1
+            mPresenter.loadDatas(pageNum)
 //        loadDatas()
     }
 
