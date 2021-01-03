@@ -30,6 +30,8 @@
 
 **base** 提取的一些base基类，用于子类继承
 
+**widget** 存放一些自定义view
+
 ### BaseActivity
 定义了抽象方法abstract
 但是定义了，子类复写方法protected后面必须要加open，这点和Java不同
@@ -44,3 +46,11 @@ toolBar height ?attr/actionBarSize   根据主题高度设置高度
 ### 1月3日疑问：
 定义方法inline 关键字是什么意思：内的关键字
 reified 关键字是什么意思:内联函数，用于约束类型
+
+### URLProviderUtils
+[Kotlin定义静态方法](https://www.jianshu.com/p/a71f41186aa0)
+
+**object** 修饰类，用于定义静态类
+
+**companion object** 包裹方法，用于定义静态方法（companion object这个关键字实际上会在Util类的内部创建一个伴生类，  
+而fun这个方法就是定义在这个伴生类里面的实例方法）
