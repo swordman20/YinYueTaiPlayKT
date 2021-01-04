@@ -18,10 +18,10 @@ class FragmentUtil private constructor() { //构造方法私有化
         val instance by lazy { FragmentUtil() }
     }
 
-    val homeFragment by lazy { HomeFragment() }
-    val mvFragment by lazy { MvFragment() }
-    val vBangFragment by lazy { VBangFragment() }
-    val yueDanFragment by lazy { YueDanFragment() }
+    private val homeFragment by lazy { HomeFragment() }
+    private val mvFragment by lazy { MvFragment() }
+    private val vBangFragment by lazy { VBangFragment() }
+    private val yueDanFragment by lazy { YueDanFragment() }
 
     /**
      * 根据tabid返回对于的fragment

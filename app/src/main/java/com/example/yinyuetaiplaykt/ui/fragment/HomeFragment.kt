@@ -71,7 +71,6 @@ class HomeFragment : BaseFragment(), HomeView {
     }
 
     override fun initData() {
-            pageNum = 1
             mPresenter.loadDatas(pageNum)
 //        loadDatas()
     }

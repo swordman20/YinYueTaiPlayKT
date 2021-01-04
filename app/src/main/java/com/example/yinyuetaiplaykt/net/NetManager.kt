@@ -1,9 +1,6 @@
 package com.example.yinyuetaiplaykt.net
 
-import com.example.yinyuetaiplaykt.model.base.BaseListBean
 import com.example.yinyuetaiplaykt.util.ThreadUtil
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import okhttp3.*
 import java.io.IOException
 
