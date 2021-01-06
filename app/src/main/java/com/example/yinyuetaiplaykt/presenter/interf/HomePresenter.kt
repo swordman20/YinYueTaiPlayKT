@@ -1,15 +1,10 @@
 package com.example.yinyuetaiplaykt.presenter.interf
 
+import com.example.yinyuetaiplaykt.base.BasePresenter
+
 /**
  *    author : hades
  *    date   : 2021/1/3
  *    desc   :
  */
-interface HomePresenter {
-    companion object{
-        const val TYPE_INIT_OR_REFRESH = 0
-        const val TYPE_LOAD_MORE = 1
-    }
-    fun loadDatas(pageNum: Int)
-    fun loadMore(pageNum: Int)
-}
+interface HomePresenter :BasePresenter

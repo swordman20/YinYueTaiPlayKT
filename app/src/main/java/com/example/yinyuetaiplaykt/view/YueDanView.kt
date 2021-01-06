@@ -1,5 +1,6 @@
 package com.example.yinyuetaiplaykt.view
 
+import com.example.yinyuetaiplaykt.base.BaseView
 import com.example.yinyuetaiplaykt.model.HomeItemBean
 
 /**
@@ -7,8 +8,4 @@ import com.example.yinyuetaiplaykt.model.HomeItemBean
  *    date   : 2021/1/3
  *    desc   :
  */
-interface YueDanView {
-    fun onMoreSuccess(list: List<HomeItemBean>?)
-    fun onError(message: String?)
-    fun onLoadSuccess(list: List<HomeItemBean>?)
-}
+interface YueDanView :BaseView<List<HomeItemBean>>

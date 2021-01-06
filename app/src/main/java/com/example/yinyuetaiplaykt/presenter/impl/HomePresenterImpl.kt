@@ -1,10 +1,12 @@
 package com.example.yinyuetaiplaykt.presenter.impl
 
+import com.example.yinyuetaiplaykt.base.BasePresenter
+import com.example.yinyuetaiplaykt.base.BaseView
+import com.example.yinyuetaiplaykt.model.HomeItemBean
 import com.example.yinyuetaiplaykt.model.base.BaseListBean
 import com.example.yinyuetaiplaykt.net.HomeRequset
 import com.example.yinyuetaiplaykt.net.ResponseHandler
 import com.example.yinyuetaiplaykt.presenter.interf.HomePresenter
-import com.example.yinyuetaiplaykt.view.HomeView
 
 /**
  *    author : hades
@@ -12,12 +14,12 @@ import com.example.yinyuetaiplaykt.view.HomeView
  *    desc   :
  */
 //这里的var修饰是为了该class里面的所有方法都可以使用homeView，如果不添加var，只有init（构造方法）能使用
-class HomePresenterImpl(var homeView: HomeView?) : HomePresenter, ResponseHandler<BaseListBean> {
+class HomePresenterImpl(var homeView: BaseView<List<HomeItemBean>>?) : HomePresenter, ResponseHandler<BaseListBean> {
 
     /**
      * 解绑view和presenter
      */
-    fun destroyView(){
+    override fun destroyView(){
         if (homeView != null) {
             homeView = null
         }
@@ -25,17 +27,17 @@ class HomePresenterImpl(var homeView: HomeView?) : HomePresenter, ResponseHandle
 
     //进一步简化
     override fun loadDatas(pageNum: Int) {
-        HomeRequset(HomePresenter.TYPE_INIT_OR_REFRESH, pageNum,this).excute()
+        HomeRequset(BasePresenter.TYPE_INIT_OR_REFRESH, pageNum,this).excute()
     }
 
     override fun loadMore(pageNum: Int) {
-        HomeRequset(HomePresenter.TYPE_LOAD_MORE,pageNum, this).excute()
+        HomeRequset(BasePresenter.TYPE_LOAD_MORE,pageNum, this).excute()
     }
 
     override fun onSuccess(type:Int,result: BaseListBean) {
         when(type){
-            HomePresenter.TYPE_INIT_OR_REFRESH->homeView?.onLoadSuccess(result.list)
-            HomePresenter.TYPE_LOAD_MORE->homeView?.onMoreSuccess(result.list)
+            BasePresenter.TYPE_INIT_OR_REFRESH->homeView?.onLoadSuccess(result.list)
+            BasePresenter.TYPE_LOAD_MORE->homeView?.onMoreSuccess(result.list)
         }
     }
 
