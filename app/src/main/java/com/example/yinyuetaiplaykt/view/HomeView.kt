@@ -1,14 +1,10 @@
 package com.example.yinyuetaiplaykt.view
 
-import com.example.yinyuetaiplaykt.model.HomeItemBean
+import com.example.yinyuetaiplaykt.base.BaseView
 
 /**
  *    author : hades
  *    date   : 2021/1/3
  *    desc   :
  */
-interface HomeView {
-    fun onMoreSuccess(list: List<HomeItemBean>?)
-    fun onError(message: String?)
-    fun onLoadSuccess(list: List<HomeItemBean>?)
-}
+interface HomeView<RESPONSE> : BaseView<RESPONSE>

@@ -1,5 +1,7 @@
 package com.example.yinyuetaiplaykt.base
 
+import com.example.yinyuetaiplaykt.model.HomeItemBean
+
 /**
  * @ClassName: BaseView
  * User: xiaxiaoge
@@ -7,7 +9,7 @@ package com.example.yinyuetaiplaykt.base
  * @Description:
  */
 interface BaseView<RESPONSE> {
-    fun onMoreSuccess(list: RESPONSE)
-    fun onError(msg: String)
-    fun onLoadSuccess(list: RESPONSE)
+    fun onMoreSuccess(respone: RESPONSE)
+    fun onError(msg: String?)
+    fun onLoadSuccess(respone: RESPONSE)
 }

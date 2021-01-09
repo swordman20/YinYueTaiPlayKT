@@ -1,5 +1,7 @@
 package com.example.yinyuetaiplaykt.presenter.impl
 
+import com.example.yinyuetaiplaykt.base.BasePresenter
+import com.example.yinyuetaiplaykt.base.BaseView
 import com.example.yinyuetaiplaykt.model.base.BaseListBean
 import com.example.yinyuetaiplaykt.net.ResponseHandler
 import com.example.yinyuetaiplaykt.net.YueDanRequest
@@ -11,23 +13,14 @@ import com.example.yinyuetaiplaykt.view.YueDanView
  *    date   : 2021/1/4
  *    desc   :
  */
-class YueDanPresenterImpl(var yuedanView: YueDanView?) : YueDanPresenter,
+class YueDanPresenterImpl(var yuedanView: YueDanView<BaseListBean>?) : YueDanPresenter,
     ResponseHandler<BaseListBean> {
-    override fun loadDatas(pageNum: Int) {
-        YueDanRequest(YueDanPresenter.TYPE_INIT_OR_REFRESH,pageNum,this).excute()
+    override fun loadData(pageNum: Int) {
+        YueDanRequest(BasePresenter.TYPE_INIT_OR_REFRESH,pageNum,this).excute()
     }
 
     override fun loadMore(pageNum: Int) {
-        YueDanRequest(YueDanPresenter.TYPE_LOAD_MORE,pageNum,this).excute()
-    }
-
-    /**
-     * 解绑view和presenter
-     */
-    fun destroyView() {
-        if (yuedanView != null) {
-            yuedanView = null
-        }
+        YueDanRequest(BasePresenter.TYPE_LOAD_MORE,pageNum,this).excute()
     }
 
     override fun onError(type: Int, msg: String?) {
@@ -35,10 +28,15 @@ class YueDanPresenterImpl(var yuedanView: YueDanView?) : YueDanPresenter,
     }
 
     override fun onSuccess(type: Int, result: BaseListBean) {
-        if (type==YueDanPresenter.TYPE_INIT_OR_REFRESH){
-            yuedanView?.onLoadSuccess(result.list)
-        }else{
-            yuedanView?.onMoreSuccess(result.list)
+        when (type) {
+            BasePresenter.TYPE_INIT_OR_REFRESH -> result?.let { yuedanView?.onLoadSuccess(result) }
+            BasePresenter.TYPE_LOAD_MORE -> result?.let { yuedanView?.onMoreSuccess(result) }
         }
     }
+    override fun onDetachView() {
+        yuedanView?.let {
+            yuedanView = null
+        }
+    }
+
 }

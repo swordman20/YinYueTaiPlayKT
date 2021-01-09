@@ -1,5 +1,7 @@
 package com.example.yinyuetaiplaykt.net
 
+import android.util.Log
+import com.example.yinyuetaiplaykt.BuildConfig
 import com.example.yinyuetaiplaykt.util.ThreadUtil
 import okhttp3.*
 import java.io.IOException
@@ -30,7 +32,7 @@ class NetManager private constructor() {
             //在子线程
             override fun onFailure(call: Call, e: IOException) {
                 ThreadUtil.runOnMainThread(Runnable {
-                    req.handler.onError(req.type,e.message)
+                    req.handler.onError(req.type, e.message)
                 })
             }
 
@@ -39,7 +41,10 @@ class NetManager private constructor() {
                 val parseResult = req.parseResult(result)
 
                 ThreadUtil.runOnMainThread(Runnable {
-                    req.handler.onSuccess(req.type,parseResult)
+                    if (BuildConfig.DEBUG) {
+                        Log.d(javaClass.name,"请求url：${req.url}\r\n请求结果：${result?:"null"}")
+                    }
+                    req.handler.onSuccess(req.type, parseResult)
                 })
             }
 
