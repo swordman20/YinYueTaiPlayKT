@@ -16,4 +16,11 @@ class YueDanFragment : BaseListFragment<BaseListBean, HomeItemBean, YueDanItemVi
     override fun createPresenter(): BasePresenter = YueDanPresenterImpl(this)
 
     override fun getItemData(response: BaseListBean): List<HomeItemBean> = response.list
+
+    override fun initListener() {
+        super.initListener()
+        adapter.setMyListener {
+            println("it${it}")
+        }
+    }
 }

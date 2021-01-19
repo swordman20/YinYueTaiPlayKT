@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yinyuetaiplaykt.widget.LoadMoreView
 
-abstract class BaseListAdapter<ITEMBEAN, ITEMVIEW : View> : RecyclerView.Adapter<BaseListAdapter.ViewHolder>() {
+abstract class BaseListAdapter<ITEMBEAN, ITEMVIEW : View> :
+    RecyclerView.Adapter<BaseListAdapter.ViewHolder>() {
 
     private var list = ArrayList<ITEMBEAN>()
 
@@ -53,7 +54,28 @@ abstract class BaseListAdapter<ITEMBEAN, ITEMVIEW : View> : RecyclerView.Adapter
         data?.let {
             setViewData(itemView, data)
         }
+        itemView.setOnClickListener {
+//            if (listener!=null){
+//                listener?.onClick(data)
+//            }
+            //Kotlin
+//            listener?.let {
+//                it(data)
+//            }
+            listener?.invoke(data)
+        }
     }
+//    Kotlin
+    //定一个一个函数式类型变量
+    var listener:((itemBean:ITEMBEAN) -> Unit)? =null
+    fun setMyListener(listener:(itemBean:ITEMBEAN) -> Unit){
+        this.listener = listener
+    }
+//    Java
+//    var listener:Listener<ITEMBEAN> ? =null
+//    interface Listener<ITEMBEAN> {
+//        fun onClick(data:ITEMBEAN)
+//    }
 
     abstract fun setViewData(itemView: ITEMVIEW, data: ITEMBEAN)
     abstract fun createItemView(context: Context): ITEMVIEW

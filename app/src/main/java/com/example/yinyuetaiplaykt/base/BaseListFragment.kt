@@ -8,7 +8,7 @@ import com.example.yinyuetaiplaykt.model.HomeItemBean
 import kotlinx.android.synthetic.main.fragment_list.*
 
 abstract class BaseListFragment<RESPONSE,ITEMBEAN,ITEMVIEW:View> : BaseFragment(), BaseView<RESPONSE> {
-    private val adapter by lazy { createAdapter() }
+    val adapter by lazy { createAdapter() }
 
     abstract fun createAdapter(): BaseListAdapter<ITEMBEAN,ITEMVIEW>
 
